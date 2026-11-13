@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ml">
+ <head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101010">
+  <title>SKR AI Assistant — Made by Sudarsanan K R</title>
+  <style>
+:root{--bg:#101010;--panel:#191919;--card:#202020;--line:#333;--txt:#f5f5f5;--muted:#999;--accent:#d9c7ff}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--txt);font-family:Inter,system-ui,Arial,sans-serif}button,textarea,input,select{font:inherit}button{cursor:pointer;color:inherit}
+.sidebar{position:fixed;inset:0 auto 0 0;width:250px;background:#171717;border-right:1px solid #292929;padding:16px 12px;display:flex;flex-direction:column;z-index:10;transition:transform .2s}
+.brand{display:flex;gap:10px;align-items:center;padding:5px 7px 22px}.logo{width:36px;height:36px;border-radius:11px;background:linear-gradient(140deg,#e1d1ff,#9073c8);color:#17131f;display:grid;place-items:center;font-weight:900}.brand b{font-size:14px}.brand small{display:block;color:#888;font-size:9px;letter-spacing:1px;margin-top:3px}
+.newchat,.nav button{width:100%;border:0;background:transparent;color:#ccc;text-align:left;padding:11px 12px;border-radius:10px;font-size:13px}.newchat{border:1px solid #383838;margin-bottom:10px}.nav button:hover,.nav button.active,.newchat:hover{background:#292929;color:#fff}.nav span{display:inline-block;width:25px;font-size:16px}
+.label{font-size:10px;letter-spacing:1.4px;color:#777;padding:20px 12px 8px}.history{flex:1;color:#888;font-size:12px;padding:10px 12px}.profile{border-top:1px solid #333;padding:13px 4px 2px;display:flex;gap:9px;align-items:center;font-size:12px}.avatar{width:32px;height:32px;border-radius:50%;background:#594b70;display:grid;place-items:center;font-weight:700}.profile small{display:block;color:#888;font-size:10px;margin-top:3px}
+.main{margin-left:250px;min-height:100vh;display:flex;flex-direction:column}.top{height:58px;position:sticky;top:0;background:#101010ed;display:flex;align-items:center;justify-content:space-between;padding:0 24px;border-bottom:1px solid #222;z-index:4}.model{font-size:11px;color:#bbb;background:#202020;border:1px solid #383838;border-radius:20px;padding:7px 11px;margin-left:10px}.top button{background:#202020;border:1px solid #393939;border-radius:9px;padding:7px 10px}
+.wrap{width:min(900px,calc(100% - 36px));margin:auto;flex:1;display:flex;flex-direction:column}.welcome{text-align:center;margin:auto auto 30px;padding-top:55px}.welcome h1{font-size:clamp(28px,4vw,40px);margin:0 0 12px}.welcome p,.sub{font-size:13px;color:#999}
+.prompt{width:100%;background:#202020;border:1px solid #424242;border-radius:24px;padding:12px 14px 10px}.prompt textarea{width:100%;min-height:55px;max-height:170px;resize:none;background:transparent;border:0;outline:0;color:white;padding:8px;font-size:15px}.prompt textarea::placeholder{color:#888}.promptfoot{display:flex;justify-content:space-between;align-items:center}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{border:1px solid #414141;background:#292929;border-radius:20px;padding:7px 10px;color:#ccc;font-size:11px}.send{width:38px;height:38px;border:0;border-radius:50%;background:#eee;color:#111;font-size:20px}.send:disabled{opacity:.35}
+.suggest{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin:20px auto}.suggest button,.card{background:#191919;border:1px solid #333;border-radius:13px;padding:13px;color:#ddd;text-align:left}.suggest b{display:block;margin:7px 0 3px}.suggest small{color:#888;font-size:10px}
+.messages{display:none;padding:35px 0 25px;gap:25px;flex-direction:column}.messages.show{display:flex}.msg{display:flex;gap:12px;line-height:1.7;font-size:14px;white-space:pre-wrap;overflow-wrap:anywhere}.badge{width:30px;height:30px;border-radius:50%;background:#d9c7ff;color:#241b30;display:grid;place-items:center;font-size:10px;font-weight:bold;flex:none}.msg.user{justify-content:flex-end}.msg.user .body{background:#292929;border-radius:18px;padding:11px 15px;max-width:82%}.msg.assistant .body{padding-top:3px;max-width:calc(100% - 45px)}
+.bottom{position:sticky;bottom:0;background:linear-gradient(transparent,#101010 25%);padding:22px 0 14px}.disclaimer{text-align:center;color:#777;font-size:10px;margin:10px 0;line-height:1.5}.section{display:none;padding:35px 0}.section.active{display:block}.section h2{font-size:24px;margin:0 0 7px}.cards{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}.card{border-radius:15px;padding:16px}.card h3{font-size:15px;margin:0 0 7px}.card p{font-size:12px;color:#999;line-height:1.5}.field{width:100%;background:#111;color:#eee;border:1px solid #3b3b3b;border-radius:11px;padding:12px;margin:7px 0 12px}.btn{border:0;border-radius:20px;padding:9px 15px;background:#eee;color:#111;font-size:12px;font-weight:700}.secondary{background:#292929;color:#ddd;border:1px solid #444}.notice,.result{padding:12px;border-radius:11px;font-size:12px;line-height:1.6;margin-bottom:15px;background:#29251d;border:1px solid #51452f;color:#d9c99f}.result{background:#111;border-color:#333;color:#999;margin-top:10px}.upload{padding:20px;text-align:center;border:1px dashed #555;border-radius:12px;color:#999;font-size:12px}.footer{text-align:center;color:#666;font-size:10px;padding:17px 0 12px}.footer b{color:#cbb9eb}.mobile{display:none}
+@media(max-width:800px){.sidebar{transform:translateX(-105%);box-shadow:20px 0 50px #0008}.sidebar.open{transform:translateX(0)}.main{margin-left:0}.top{padding:0 13px}.hamb{display:inline-block!important}.wrap{width:calc(100% - 26px)}.suggest{grid-template-columns:repeat(2,1fr)}.cards{grid-template-columns:1fr}.mobile{display:flex;position:fixed;bottom:0;left:0;right:0;justify-content:space-around;background:#181818;border-top:1px solid #333;padding:7px 3px calc(7px + env(safe-area-inset-bottom));z-index:5}.mobile button{background:transparent;border:0;color:#aaa;font-size:10px}.mobile span{display:block;font-size:17px;margin-bottom:2px}.footer{padding-bottom:75px}.bottom{bottom:48px}}
+</style>
+ </head>
+ <body>
+  <aside class="sidebar" id="sidebar">
+   <div class="brand">
+    <div class="logo">SKR</div>
+    <div>
+     <b>SKR AI Assistant</b><small>MADE BY SUDARSANAN K R</small>
+    </div>
+   </div>
+   <button class="newchat" id="newchat">＋ &nbsp;New chat</button>
+   <nav class="nav">
+    <button class="active" data-page="home"><span>⌂</span>Home / Chat</button>
+    <button data-page="create"><span>✧</span>Create images &amp; videos</button>
+    <button data-page="voice"><span>◖</span>Voice assistant</button>
+    <button data-page="docs"><span>▤</span>Files &amp; documents</button>
+    <button data-page="code"><span>⌘</span>Coding assistant</button>
+    <button data-page="research"><span>⌕</span>Research &amp; writing</button>
+   </nav>
+   <div class="label">RECENT CHATS</div>
+   <div class="history">Your recent conversations will appear here.</div>
+   <div class="profile">
+    <div class="avatar">SKR</div>
+    <div>
+     <b>Sudarsanan K R</b><small>Owner workspace · Preview</small>
+    </div>
+   </div>
+  </aside>
+  <main class="main">
+   <header class="top">
+    <div>
+     <button class="hamb" id="menu" style="display:none">☰</button>
+     <strong>SKR AI</strong><span class="model">Assistant ⌄</span>
+    </div>
+    <button onclick="alert('Sharing will be available after account setup.')">↗ Share</button>
+   </header>
+   <div class="wrap">
+    <div class="welcome" id="welcome">
+     <h1>എന്താണ് ഇന്ന് ചെയ്യേണ്ടത്?</h1>
+     <p>Ask anything. Create anything. Build with SKR AI.</p>
+    </div>
+    <div class="messages" id="messages" aria-live="polite"></div>
+    <section class="section" id="create">
+     <h2>✧ Create Studio</h2>
+     <p class="sub">AI images, videos, music and photo editing.</p>
+     <div class="notice">ഈ സൗകര്യങ്ങൾക്ക് പ്രത്യേകം image/video/audio provider ബന്ധിപ്പിക്കണം. Chat API മാത്രം ഉപയോഗിച്ച് ഇവ പ്രവർത്തിക്കില്ല. API keys HTML-ൽ ഇടരുത്.</div>
+     <div class="cards">
+      <div class="card">
+       <h3>🖼️ AI Image Generator</h3>
+       <p>Text to image · Creative styles · Variations</p>
+       <textarea class="field" rows="3" placeholder="Describe your image..."></textarea>
+       <button class="btn" onclick="providerNotice('Image generation')">Generate image</button>
+       <div class="result">Image provider connection required.</div>
+      </div>
+      <div class="card">
+       <h3>🎬 AI Video Generator</h3>
+       <p>Text to video · Image to video · Duration depends on provider</p>
+       <textarea class="field" rows="3" placeholder="Describe your video..."></textarea>
+       <button class="btn" onclick="providerNotice('Video generation')">Create video</button>
+       <div class="result">Video provider connection required.</div>
+      </div>
+      <div class="card">
+       <h3>🎵 AI Music &amp; Voiceover</h3>
+       <textarea class="field" rows="3" placeholder="Describe mood, genre, language..."></textarea>
+       <button class="btn" onclick="providerNotice('Music generation')">Generate audio</button>
+      </div>
+      <div class="card">
+       <h3>📷 AI Photo Editor</h3>
+       <div class="upload">
+        Upload a photo
+        <br>
+        <input type="file" accept="image/*">
+       </div>
+       <button class="btn" onclick="providerNotice('Photo editing')">Edit photo</button>
+      </div>
+     </div>
+    </section>
+    <section class="section" id="voice">
+     <h2>◖ Voice Assistant</h2>
+     <p class="sub">Speak and listen in supported languages.</p>
+     <div class="card">
+      <select class="field" id="lang"><option value="ml-IN">Malayalam</option><option value="en-IN">English (India)</option><option value="hi-IN">Hindi</option><option value="ta-IN">Tamil</option></select><textarea class="field" id="voiceText" rows="5" placeholder="Recognized speech..."></textarea>
+      <button class="btn" id="listen">🎙 Start speaking</button>
+      <button class="btn secondary" id="speak">🔊 Read aloud</button>
+      <button class="btn secondary" id="stop">Stop</button>
+      <div class="result" id="voiceStatus">Browser speech support required.</div>
+     </div>
+    </section>
+    <section class="section" id="docs">
+     <h2>▤ Files &amp; Documents</h2>
+     <p class="sub">PDF and document assistant.</p>
+     <div class="card">
+      <div class="upload">
+       Choose PDF / DOC / TXT
+       <br>
+       <input type="file" id="doc" accept=".pdf,.doc,.docx,.txt">
+      </div>
+      <div class="result" id="docStatus">No file selected.</div>
+      <button class="btn" onclick="providerNotice('PDF assistant')">Summarize with AI</button>
+     </div>
+    </section>
+    <section class="section" id="code">
+     <h2>⌘ Coding Assistant</h2>
+     <p class="sub">Build and debug websites, software and apps.</p>
+     <div class="card">
+      <textarea class="field" rows="7" placeholder="Describe your project or paste code..."></textarea>
+      <p class="sub">Copy your question into the main Chat to use connected AI.</p>
+      <button class="btn" onclick="page('home')">Go to Chat</button>
+     </div>
+    </section>
+    <section class="section" id="research">
+     <h2>⌕ Research &amp; Writing</h2>
+     <p class="sub">Research, translate, summarize and write.</p>
+     <div class="card">
+      <textarea class="field" rows="6" placeholder="Enter a topic or text..."></textarea>
+      <p class="sub">Copy your text into the main Chat to ask SKR AI.</p>
+      <button class="btn" onclick="page('home')">Go to Chat</button>
+     </div>
+    </section>
+    <div class="bottom" id="bottom">
+     <div class="prompt">
+      <textarea id="input" rows="1" placeholder="Message SKR AI..."></textarea>
+      <div class="promptfoot">
+       <div class="chips">
+        <button class="chip" data-page="docs">＋ Attach</button>
+        <button class="chip" data-page="create">✧ Create</button>
+        <button class="chip" data-page="voice">🎙 Voice</button>
+       </div>
+       <button class="send" id="send" disabled>↑</button>
+      </div>
+     </div>
+     <div class="disclaimer">SKR AI can make mistakes. Verify important information. · AI usage may incur API charges.</div>
+    </div>
+    <div class="suggest" id="suggest">
+     <button data-page="create">🎨<b>Create an image</b><small>Turn an idea into art</small></button>
+     <button data-page="create">🎬<b>Make a video</b><small>Text or image to video</small></button>
+     <button data-page="home">⌘<b>Write code</b><small>Build a website or app</small></button>
+     <button data-page="home">✎<b>Help me write</b><small>Draft, translate, summarize</small></button>
+    </div>
+    <footer class="footer">
+     MADE BY <b>SUDARSANAN K R</b> · SKR AI ASSISTANT
+    </footer>
+   </div>
+  </main>
+  <div class="mobile">
+   <button data-page="home"><span>⌂</span>Chat</button>
+   <button data-page="create"><span>✧</span>Create</button>
+   <button data-page="voice"><span>◖</span>Voice</button>
+   <button data-page="docs"><span>▤</span>Files</button>
+   <button id="mobilemenu"><span>☰</span>Menu</button>
+  </div>
+  <script>
+/* The API key is kept in the Cloudflare Worker, never in this public HTML. */
+const API_URL='https://skr-ai-backend.sudarsanankr49.workers.dev';
+const ids=['home','create','voice','docs','code','research'];
+const sidebar=document.getElementById('sidebar'),welcome=document.getElementById('welcome'),messages=document.getElementById('messages'),bottom=document.getElementById('bottom'),suggest=document.getElementById('suggest'),input=document.getElementById('input'),send=document.getElementById('send');
+const chatHistory=[];
+function page(id){ids.forEach(x=>{const el=document.getElementById(x);if(el)el.classList.toggle('active',x===id)});document.querySelectorAll('[data-page]').forEach(b=>b.classList.toggle('active',b.dataset.page===id));const home=id==='home';welcome.style.display=home&&!messages.classList.contains('show')?'block':'none';bottom.style.display=home?'block':'none';suggest.style.display=home&&!messages.classList.contains('show')?'grid':'none';sidebar.classList.remove('open');window.scrollTo({top:0,behavior:'smooth'});}
+document.querySelectorAll('[data-page]').forEach(b=>b.addEventListener('click',()=>page(b.dataset.page)));
+document.getElementById('menu').onclick=()=>sidebar.classList.toggle('open');document.getElementById('mobilemenu').onclick=()=>sidebar.classList.toggle('open');
+function providerNotice(n){alert(n+' needs a separate AI provider connection. OpenAI Chat API does not automatically enable image, video or music generation.');}
+input.addEventListener('input',()=>{send.disabled=!input.value.trim();input.style.height='auto';input.style.height=Math.min(input.scrollHeight,170)+'px';});
+function addMsg(text,role){const row=document.createElement('div');row.className='msg '+role;const av=document.createElement('div');av.className='badge';av.textContent=role==='user'?'YOU':'SKR';const body=document.createElement('div');body.className='body';body.textContent=text;if(role==='user')row.append(body,av);else row.append(av,body);messages.append(row);return body;}
+async function submit(){
+ const text=input.value.trim();if(!text||send.disabled)return;
+ welcome.style.display='none';suggest.style.display='none';messages.classList.add('show');addMsg(text,'user');chatHistory.push({role:'user',content:text});input.value='';input.style.height='auto';send.disabled=true;
+ const replyBody=addMsg('മറുപടി തയ്യാറാക്കുന്നു…','assistant');
+ try{
+  const response=await fetch(API_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({messages:chatHistory})});
+  let data={};try{data=await response.json()}catch(_){}
+  if(!response.ok)throw new Error(data.error||('Server error '+response.status));
+  if(!data.reply)throw new Error('Backend-ൽ നിന്ന് മറുപടി ലഭിച്ചില്ല.');
+  replyBody.textContent=data.reply;chatHistory.push({role:'assistant',content:data.reply});
+ }catch(err){replyBody.textContent='ക്ഷമിക്കണം, AI ബന്ധിപ്പിക്കാനായില്ല: '+err.message+' Cloudflare Worker deployment, OPENAI_API_KEY Secret, CORS, OpenAI API billing എന്നിവ പരിശോധിക്കുക.';chatHistory.pop();}
+ send.disabled=!input.value.trim();
+}
+send.addEventListener('click',submit);input.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();submit();}});
+function resetChat(){messages.innerHTML='';messages.classList.remove('show');chatHistory.length=0;welcome.style.display='block';suggest.style.display='grid';input.value='';send.disabled=true;page('home');}
+document.getElementById('newchat').onclick=resetChat;
+let recognition;
+document.getElementById('listen').onclick=()=>{const Speech=window.SpeechRecognition||window.webkitSpeechRecognition,status=document.getElementById('voiceStatus');if(!Speech){status.textContent='ഈ browser-ൽ speech recognition ലഭ്യമല്ല. Chrome ഉപയോഗിച്ച് ശ്രമിക്കുക.';return;}recognition=new Speech();recognition.lang=document.getElementById('lang').value;recognition.interimResults=true;recognition.onresult=e=>{let t='';for(let i=e.resultIndex;i<e.results.length;i++)t+=e.results[i][0].transcript;document.getElementById('voiceText').value=t;};recognition.onerror=e=>status.textContent='Voice error: '+e.error;recognition.start();status.textContent='Listening…';};
+document.getElementById('speak').onclick=()=>{const t=document.getElementById('voiceText').value;if(!t.trim())return;const u=new SpeechSynthesisUtterance(t);u.lang=document.getElementById('lang').value;speechSynthesis.cancel();speechSynthesis.speak(u);};
+document.getElementById('stop').onclick=()=>{if(recognition)recognition.stop();speechSynthesis.cancel();};
+document.getElementById('doc').onchange=e=>{const f=e.target.files[0];if(f)document.getElementById('docStatus').textContent='Selected: '+f.name+'. Document AI analysis needs a separate upload-processing feature.';};
+</script>
+ </body>
+</html>
